@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
-namespace Intro;
+namespace Banking.Modules.Identity.Domain;
 
 public class BankingContext : DbContext {
     public BankingContext(DbContextOptions<BankingContext> options) : base(options) { }
@@ -11,10 +12,13 @@ public class BankingContext : DbContext {
     public DbSet<Transaction> Transactions => Set<Transaction>();
 }
 
-public class User {
+public class User: IdentityUser {
     public int UserId { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public bool IsActive { get; set; }
+
+    public DateTime LastPasswordChangeDate { get; set; } = TimeProvider.System.GetUtcNow().UtcDateTime;
 }
 
 public class Account {
